@@ -157,4 +157,18 @@ router.put('/guilds/:guildID/ruleschannel', async (req, res) => {
 		: res.status(400).send({ msg: 'Could not find document' });
 });
 
+// StarChannel
+router.put('/guilds/:guildID/starchannel', async (req, res) => {
+	const starchannel = await req.body.data;
+	const { guildID } = req.params;
+	const update = await Guild.findOneAndUpdate(
+		{ guildid: guildID },
+		{ starchannel },
+		{ new: true }
+	);
+	return update
+		? res.send(update)
+		: res.status(400).send({ msg: 'Could not find document' });
+});
+
 module.exports = router;

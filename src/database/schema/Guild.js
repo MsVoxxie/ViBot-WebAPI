@@ -8,7 +8,7 @@ const guildSchema = mongoose.Schema({
 	},
 	guildcolor: {
 		type: String,
-		default: def.guildcolor,
+		default: def.guildgolor,
 	},
 	guildid: {
 		type: Number,
@@ -42,21 +42,17 @@ const guildSchema = mongoose.Schema({
 		type: String,
 		default: def.ruleschannel,
 	},
+	starchannel: {
+		type: String,
+		default: def.starchannel,
+	},
 	disabledModules: {
 		type: Array,
 		default: def.disabledModules,
 	},
-	roleConfiguration: {
+	channels: {
 		type: Array,
-		default: def.roleConfiguration,
-	},
-	modrole: {
-		type: String,
-		default: def.modrole,
-	},
-	adminrole: {
-		type: String,
-		default: def.adminrole,
+		default: def.channels,
 	},
 });
 
