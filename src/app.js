@@ -1,10 +1,12 @@
 require('dotenv').config();
 require('./strategies/discord');
 
+const ms = require('ms');
 const fs = require('fs');
 const express = require('express');
 const passport = require('passport');
 const mongoose = require('mongoose');
+const rateLimit = require('express-rate-limit');
 const session = require('express-session');
 const cors = require('cors');
 const Store = require('connect-mongo');
@@ -21,6 +23,18 @@ mongoose.connect(process.env.DB_CREDS, {
 	useFindAndModify: false,
 });
 
+const limiterTimeout = 15 * 60 * 1000; // 15 minutes
+
+const limiter = rateLimit({
+	windowMs: limiterTimeout,
+	max: 10,
+	message: `Woah there buckaroo, Looks like you're trying to do something naughty! Sit in the timeout corner for ${ms(
+		limiterTimeout,
+		{ long: true }
+	)}!`,
+});
+
+app.use(limiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -50,8 +64,12 @@ app.use(passport.session());
 
 app.use('/api', routes);
 
-https.createServer({
-	key: fs.readFileSync('./ssl/privkey.pem'),
-	cert: fs.readFileSync('./ssl/fullchain.pem')
-}, app)
-.listen(PORT, '0.0.0.0', () => console.log(`Running on ${PORT}`));
+https
+	.createServer(
+		{
+			key: fs.readFileSync('./ssl/privkey.pem'),
+			cert: fs.readFileSync('./ssl/fullchain.pem'),
+		},
+		app
+	)
+	.listen(PORT, '0.0.0.0', () => console.log(`Running on ${PORT}`));
