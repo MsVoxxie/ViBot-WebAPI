@@ -27,7 +27,7 @@ const limiterTimeout = 15 * 60 * 1000; // 15 minutes
 
 const limiter = rateLimit({
 	windowMs: limiterTimeout,
-	max: 10,
+	max: 1000,
 	message: `Woah there buckaroo, Looks like you're trying to do something naughty! Sit in the timeout corner for ${ms(
 		limiterTimeout,
 		{ long: true }
@@ -67,8 +67,8 @@ app.use('/api', routes);
 https
 	.createServer(
 		{
-			key: fs.readFileSync('./ssl/privkey.pem'),
-			cert: fs.readFileSync('./ssl/fullchain.pem'),
+			key: fs.readFileSync('./ssl/key.pem'),
+			cert: fs.readFileSync('./ssl/cert.pem'),
 		},
 		app
 	)
