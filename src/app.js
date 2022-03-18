@@ -28,10 +28,7 @@ const limiterTimeout = 15 * 60 * 1000; // 15 minutes
 const limiter = rateLimit({
 	windowMs: limiterTimeout,
 	max: 1000,
-	message: `Woah there buckaroo, Looks like you're trying to do something naughty! Sit in the timeout corner for ${ms(
-		limiterTimeout,
-		{ long: true }
-	)}!`,
+	message: `Woah there buckaroo, Looks like you're trying to do something naughty! Sit in the timeout corner for ${ms(limiterTimeout, { long: true })}!`,
 });
 
 app.use(limiter);
@@ -40,7 +37,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(
 	cors({
-		origin: ['https://bot.voxxie.me', 'http://localhost:3002', 'http://192.168.0.110:3002'],
+		origin: ['https://bot.voxxie.me', 'https://share.voxxie.me', 'http://localhost:3002', 'http://192.168.0.110:3002'],
 		credentials: true,
 	})
 );
@@ -62,13 +59,19 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/api', routes);
+const AUTH = {
+	privateKey: fs.readFileSync('/etc/letsencrypt/live/api.voxxie.me/privkey.pem', 'utf8'),
+	certificate: fs.readFileSync('/etc/letsencrypt/live/api.voxxie.me/fullchain.pem', 'utf8'),
+	ca: fs.readFileSync('/etc/letsencrypt/live/api.voxxie.me/chain.pem', 'utf8'),
+};
 
+app.use('/api', routes);
 https
 	.createServer(
 		{
-			key: fs.readFileSync('./ssl/key.pem'),
-			cert: fs.readFileSync('./ssl/cert.pem'),
+			key: AUTH.privateKey,
+			cert: AUTH.certificate,
+			ca: AUTH.ca,
 		},
 		app
 	)

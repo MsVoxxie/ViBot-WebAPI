@@ -12,11 +12,11 @@ async function getMutualGuilds(userGuilds, botGuilds) {
 }
 
 function encrypt(token) {
-	return CryptoJS.AES.encrypt(token, process.env.CRYPTO_SECRET)
+	return CryptoJS.AES.encrypt(token, process.env.CRYPTO_SECRET);
 }
 
 function decrypt(token) {
-	return CryptoJS.AES.decrypt(token, process.env.CRYPTO_SECRET)
+	return CryptoJS.AES.decrypt(token, process.env.CRYPTO_SECRET);
 }
 
 module.exports = { getMutualGuilds, encrypt, decrypt };

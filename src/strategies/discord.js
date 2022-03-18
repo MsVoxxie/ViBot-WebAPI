@@ -27,7 +27,6 @@ passport.use(
 			scope: ['identify', 'guilds'],
 		},
 		async (accessToken, refreshToken, profile, done) => {
-
 			const encrptedAccessToken = encrypt(accessToken).toString();
 			const encryptedRefreshToken = encrypt(refreshToken).toString();
 
@@ -42,18 +41,21 @@ passport.use(
 					},
 					{ new: true }
 				);
-				
-				const findCredentials = await OAuth2Credentials.findOneAndUpdate({ discordID: id }, {
-					accessToken: encrptedAccessToken,
-					refreshToken: encryptedRefreshToken,	
-				})
+
+				const findCredentials = await OAuth2Credentials.findOneAndUpdate(
+					{ discordID: id },
+					{
+						accessToken: encrptedAccessToken,
+						refreshToken: encryptedRefreshToken,
+					}
+				);
 
 				if (findUser) {
-					if(!findCredentials){
+					if (!findCredentials) {
 						const newCredentials = await OAuth2Credentials.create({
 							accessToken: encrptedAccessToken,
 							refreshToken: encryptedRefreshToken,
-							discordID: id,	
+							discordID: id,
 						});
 					}
 					return done(null, findUser);
@@ -68,7 +70,7 @@ passport.use(
 					const newCredentials = await OAuth2Credentials.create({
 						accessToken: encrptedAccessToken,
 						refreshToken: encryptedRefreshToken,
-						discordID: id,	
+						discordID: id,
 					});
 
 					return done(null, newUser);

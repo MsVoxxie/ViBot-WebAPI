@@ -3,6 +3,7 @@ const { getBotGuilds, getUserGuilds, getBotData } = require('../util/api');
 const { getMutualGuilds } = require('../util/utils');
 const User = require('../database/schema/User');
 const Guild = require('../database/schema/Guild');
+const BotData = require('../database/schema/BotData');
 
 router.get('/guilds', async (req, res) => {
 	const guilds = await getBotGuilds();
@@ -23,6 +24,11 @@ router.get('/vibot', async (req, res) => {
 	} else {
 		return res.status(401).send({ msg: 'Failed to Receive Data' });
 	}
+});
+
+router.get('/vibot/stats', async (req, res) => {
+	const data = await BotData.findOne({});
+	return data ? res.send(data) : res.status(404).send({ msg: 'Data Not Found' });
 });
 
 router.get('/guilds/:guildID/config', async (req, res) => {
@@ -151,6 +157,14 @@ router.put('/guilds/:guildID/birthdaychannel', async (req, res) => {
 	const birthdaychannel = await req.body.data;
 	const { guildID } = req.params;
 	const update = await Guild.findOneAndUpdate({ guildid: guildID }, { birthdaychannel }, { new: true });
+	return update ? res.send(update) : res.status(400).send({ msg: 'Could not find document' });
+});
+
+// LevelChannel
+router.put('/guilds/:guildID/levelchannel', async (req, res) => {
+	const levelchannel = await req.body.data;
+	const { guildID } = req.params;
+	const update = await Guild.findOneAndUpdate({ guildid: guildID }, { levelchannel }, { new: true });
 	return update ? res.send(update) : res.status(400).send({ msg: 'Could not find document' });
 });
 
