@@ -16,63 +16,89 @@ const app = express();
 const PORT = process.env.PORT || 3002;
 const routes = require('./routes');
 
-mongoose.connect(process.env.DB_CREDS, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-	useCreateIndex: true,
-	useFindAndModify: false,
-});
+async function startApp() {
+	console.log('App Starting...');
+	console.log('Connecting to MongoDB...');
 
-const limiterTimeout = 15 * 60 * 1000; // 15 minutes
+	try {
+		await mongoose.connect(process.env.DB_CREDS, {
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+			useCreateIndex: true,
+			useFindAndModify: false,
+		});
+	} catch (err) {
+		console.log('Error connecting to MongoDB');
+		return process.exit(1);
+	}
 
-const limiter = rateLimit({
-	windowMs: limiterTimeout,
-	max: 1000,
-	message: `Woah there buckaroo, Looks like you're trying to do something naughty! Sit in the timeout corner for ${ms(limiterTimeout, { long: true })}!`,
-});
+	console.log('Connected to MongoDB');
 
-app.use(limiter);
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+	mongoose.connection.on('connected', () => {
+		console.log('Connected to Database');
+	});
+	mongoose.connection.on('err', (err) => {
+		return process.exit(1);
+	});
+	mongoose.connection.on('disconnect', () => {
+		console.log('Database Disconnected');
+		return process.exit(1);
+	});
 
-app.use(
-	cors({
-		origin: ['https://bot.voxxie.me', 'https://share.voxxie.me', 'http://localhost:3002', 'http://192.168.0.110:3002'],
-		credentials: true,
-	})
-);
+	const limiterTimeout = 15 * 60 * 1000; // 15 minutes
 
-app.use(
-	session({
-		secret: process.env.COOKIE_SECRET,
-		cookie: {
-			maxAge: 60 * 1000 * 60 * 24 * 7,
-		},
-		resave: false,
-		saveUninitialized: false,
-		store: Store.create({
-			mongoUrl: process.env.DB_CREDS,
-		}),
-	})
-);
+	const limiter = rateLimit({
+		windowMs: limiterTimeout,
+		max: 1000,
+		message: `Woah there buckaroo, Looks like you're trying to do something naughty! Sit in the timeout corner for ${ms(limiterTimeout, { long: true })}!`,
+	});
 
-app.use(passport.initialize());
-app.use(passport.session());
+	app.use(limiter);
+	app.use(express.json());
+	app.use(express.urlencoded({ extended: false }));
 
-const AUTH = {
-	privateKey: fs.readFileSync('/etc/letsencrypt/live/api.voxxie.me/privkey.pem', 'utf8'),
-	certificate: fs.readFileSync('/etc/letsencrypt/live/api.voxxie.me/fullchain.pem', 'utf8'),
-	ca: fs.readFileSync('/etc/letsencrypt/live/api.voxxie.me/chain.pem', 'utf8'),
-};
+	app.use(
+		cors({
+			origin: ['https://bot.voxxie.me', 'https://share.voxxie.me', 'http://localhost:3002', 'http://192.168.0.110:3002'],
+			credentials: true,
+		})
+	);
 
-app.use('/api', routes);
-https
-	.createServer(
-		{
-			key: AUTH.privateKey,
-			cert: AUTH.certificate,
-			ca: AUTH.ca,
-		},
-		app
-	)
-	.listen(PORT, '0.0.0.0', () => console.log(`Running on ${PORT}`));
+	app.use(
+		session({
+			secret: process.env.COOKIE_SECRET,
+			cookie: {
+				maxAge: 60 * 1000 * 60 * 24 * 7,
+			},
+			resave: false,
+			saveUninitialized: false,
+			store: Store.create({
+				mongoUrl: process.env.DB_CREDS,
+			}),
+		})
+	);
+
+	app.use(passport.initialize());
+	app.use(passport.session());
+
+	const AUTH = {
+		privateKey: fs.readFileSync('/etc/letsencrypt/live/api.voxxie.me/privkey.pem', 'utf8'),
+		certificate: fs.readFileSync('/etc/letsencrypt/live/api.voxxie.me/fullchain.pem', 'utf8'),
+		ca: fs.readFileSync('/etc/letsencrypt/live/api.voxxie.me/chain.pem', 'utf8'),
+	};
+
+	app.use('/api', routes);
+	console.log('Starting Server...');
+	https
+		.createServer(
+			{
+				key: AUTH.privateKey,
+				cert: AUTH.certificate,
+				ca: AUTH.ca,
+			},
+			app
+		)
+		.listen(PORT, '0.0.0.0', () => console.log(`Server Started on port:  ${PORT}`));
+}
+
+startApp();
