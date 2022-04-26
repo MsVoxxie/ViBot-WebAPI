@@ -10,7 +10,7 @@ router.get('/statistics', async (req, res) => {
 	const cpuAverage = (os.loadavg()[0] + os.loadavg()[1] + os.loadavg()[2]) / 3;
 
 	const stats = {
-		Hostname: os.hostname(),
+		Hostname: firstUpper(os.hostname()),
 		Uptime: uptime.map((t) => t).join(' '),
 		Cpus: os.cpus().length,
 		CpuUsage: Math.floor(cpuAverage * 10),
@@ -24,6 +24,10 @@ router.get('/statistics', async (req, res) => {
 	};
 	return res.send(stats);
 });
+
+function firstUpper(string) {
+	return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 function getDisk() {
 	return new Promise((resolve, reject) => {
