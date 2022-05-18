@@ -59,7 +59,7 @@ async function startApp() {
 
 	app.use(
 		cors({
-			origin: ['https://bot.voxxie.me', 'https://share.voxxie.me', 'http://localhost:3002', 'http://192.168.0.110:3002'],
+			origin: ['https://bot.voxxie.me', 'https://share.voxxie.me', 'http://localhost:3001', 'http://192.168.0.108:3001'],
 			credentials: true,
 		})
 	);
