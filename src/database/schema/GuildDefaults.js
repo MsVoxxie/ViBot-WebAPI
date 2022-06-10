@@ -21,10 +21,12 @@ module.exports = {
 		twitchchannel: 'Not Set',
 		birthdaychannel: 'Not Set',
 		levelchannel: 'Not Set',
-		staffpermission: 'Not Set',
+		verifiedrole: 'Not Set',
 		disabledModules: ['legacy'],
 		channels: [],
+		roles: [],
 		twitterwatch: [],
 		nsfwblacklist: [],
+		staffroles: [],
 	},
 };

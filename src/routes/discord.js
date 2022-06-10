@@ -168,4 +168,31 @@ router.put('/guilds/:guildID/levelchannel', async (req, res) => {
 	return update ? res.send(update) : res.status(400).send({ msg: 'Could not find document' });
 });
 
+//AntiSpam
+router.put('/guilds/:guildID/spamdetection', async (req, res) => {
+	const spamdetection = await req.body.data;
+	const { guildID } = req.params;
+	if (!spamdetection) return res.status(400).send({ msg: 'spamdetection is required!' });
+	const update = await Guild.findOneAndUpdate({ guildid: guildID }, { spamdetection }, { new: true });
+	return update ? res.send(update) : res.status(400).send({ msg: 'Could not find document' });
+});
+
+//Kick accounts less than 2 weeks of age
+router.put('/guilds/:guildID/kicknew', async (req, res) => {
+	const kicknew = await req.body.data;
+	const { guildID } = req.params;
+	if (!kicknew) return res.status(400).send({ msg: 'kicknew is required!' });
+	const update = await Guild.findOneAndUpdate({ guildid: guildID }, { kicknew }, { new: true });
+	return update ? res.send(update) : res.status(400).send({ msg: 'Could not find document' });
+});
+
+//Twitch Mention Everyone?
+router.put('/guilds/:guildID/twitchmention', async (req, res) => {
+	const twitchmention = await req.body.data;
+	const { guildID } = req.params;
+	if (!twitchmention) return res.status(400).send({ msg: 'twitchmention is required!' });
+	const update = await Guild.findOneAndUpdate({ guildid: guildID }, { twitchmention }, { new: true });
+	return update ? res.send(update) : res.status(400).send({ msg: 'Could not find document' });
+});
+
 module.exports = router;

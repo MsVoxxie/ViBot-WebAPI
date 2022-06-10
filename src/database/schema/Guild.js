@@ -22,8 +22,8 @@ const guildSchema = mongoose.Schema({
 		default: '',
 	},
 
-	//Staff Settings
-	staffpermission: {
+	//verification Settings
+	verifiedrole: {
 		type: String,
 		default: 'Not Set',
 	},
@@ -57,6 +57,14 @@ const guildSchema = mongoose.Schema({
 		type: Boolean,
 		default: false,
 	},
+	spamdetection: {
+		type: Boolean,
+		default: false,
+	},
+	kicknew: {
+		type: Boolean,
+		default: false,
+	},
 
 	//Channels
 	auditchannel: {
@@ -68,6 +76,10 @@ const guildSchema = mongoose.Schema({
 		default: 'Not Set',
 	},
 	verifychannel: {
+		type: String,
+		default: 'Not Set',
+	},
+	confirmationchannel: {
 		type: String,
 		default: 'Not Set',
 	},
@@ -111,12 +123,22 @@ const guildSchema = mongoose.Schema({
 		unique: true,
 		default: [],
 	},
+	roles: {
+		type: Array,
+		unique: true,
+		default: [],
+	},
 	twitterwatch: {
 		type: Array,
 		unique: true,
 		default: [],
 	},
 	nsfwblacklist: {
+		type: Array,
+		unique: true,
+		default: [],
+	},
+	staffroles: {
 		type: Array,
 		unique: true,
 		default: [],
