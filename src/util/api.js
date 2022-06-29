@@ -4,7 +4,7 @@ const OAuth2Credentials = require('../database/schema/OAuth2Credentials');
 const { decrypt } = require('../util/utils');
 const TOKEN = process.env.BOT_TOKEN;
 
-const DISCORD_API = 'http://discord.com/api/v6/';
+const DISCORD_API = 'http://discord.com/api/v9/';
 
 async function getBotGuilds() {
 	const response = await fetch(`${DISCORD_API}users/@me/guilds`, {

@@ -45,7 +45,8 @@ async function startApp() {
 	app.use(express.json());
 	app.use(express.urlencoded({ extended: false }));
 
-	app.use( cors({ origin: ['https://bot.voxxie.me', 'https://share.voxxie.me', 'http://localhost:3001', 'http://192.168.0.108:3001'], credentials: true, }) );
+	app.use( cors({ origin: ['https://api.voxxie.me','https://bot.voxxie.me','https://share.voxxie.me','https://localhost','https://192.168.0.108'], credentials: true, }) );
+
 
 	app.use( session({ secret: process.env.COOKIE_SECRET, cookie: { maxAge: 60 * 1000 * 60 * 24 * 7, }, resave: false, saveUninitialized: false, store: Store.create({ mongoUrl: process.env.DB_CREDS, }), }) );
 

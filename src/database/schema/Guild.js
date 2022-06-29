@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { defaultSettings: def } = require('./GuildDefaults');
 
 const guildSchema = mongoose.Schema({
 	//Prefix
@@ -15,7 +14,6 @@ const guildSchema = mongoose.Schema({
 	},
 	guildid: {
 		type: Number,
-		default: '',
 	},
 	guildname: {
 		type: String,
