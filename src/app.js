@@ -21,7 +21,7 @@ async function startApp() {
 	console.log('Connecting to MongoDB...');
 
 	try {
-		mongoose.connect(process.env.DB_CREDS, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false, });
+		mongoose.connect(process.env.DB_CREDS, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false });
 	} catch (err) {
 		console.log('Error connecting to MongoDB');
 		return process.exit(1);
@@ -29,9 +29,16 @@ async function startApp() {
 
 	console.log('Connected to MongoDB');
 
-	mongoose.connection.on('connected', () => { console.log('Connected to Database'); });
-	mongoose.connection.on('err', (err) => { return process.exit(1); });
-	mongoose.connection.on('disconnect', () => { console.log('Database Disconnected'); return process.exit(1); });
+	mongoose.connection.on('connected', () => {
+		console.log('Connected to Database');
+	});
+	mongoose.connection.on('err', (err) => {
+		return process.exit(1);
+	});
+	mongoose.connection.on('disconnect', () => {
+		console.log('Database Disconnected');
+		return process.exit(1);
+	});
 
 	const limiterTimeout = 15 * 60 * 1000; // 15 minutes
 
@@ -45,10 +52,9 @@ async function startApp() {
 	app.use(express.json());
 	app.use(express.urlencoded({ extended: false }));
 
-	app.use( cors({ origin: ['https://api.voxxie.me','https://bot.voxxie.me','https://share.voxxie.me','https://localhost','https://192.168.0.108'], credentials: true, }) );
+	app.use(cors({ origin: ['https://api.voxxie.me', 'https://bot.voxxie.me', 'https://share.voxxie.me', 'https://localhost', 'https://192.168.0.108'], credentials: true }));
 
-
-	app.use( session({ secret: process.env.COOKIE_SECRET, cookie: { maxAge: 60 * 1000 * 60 * 24 * 7, }, resave: false, saveUninitialized: false, store: Store.create({ mongoUrl: process.env.DB_CREDS, }), }) );
+	app.use(session({ secret: process.env.COOKIE_SECRET, cookie: { maxAge: 60 * 1000 * 60 * 24 * 7 }, resave: false, saveUninitialized: false, store: Store.create({ mongoUrl: process.env.DB_CREDS }) }));
 
 	app.use(passport.initialize());
 	app.use(passport.session());
@@ -61,8 +67,7 @@ async function startApp() {
 
 	app.use('/api', routes);
 	console.log('Starting Server...');
-	https.createServer( { key: AUTH.privateKey, cert: AUTH.certificate, ca: AUTH.ca, }, app )
-	.listen(PORT, '0.0.0.0', () => console.log(`Server Started on port:  ${PORT}`));
+	https.createServer({ key: AUTH.privateKey, cert: AUTH.certificate, ca: AUTH.ca }, app).listen(PORT, '0.0.0.0', () => console.log(`Server Started on port:  ${PORT}`));
 }
 
 startApp();
