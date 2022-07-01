@@ -41,7 +41,7 @@ async function startApp() {
 	});
 
 	const limiterTimeout = 15 * 60 * 1000; // 15 minutes
-
+ 
 	const limiter = rateLimit({
 		windowMs: limiterTimeout,
 		max: 1000,
@@ -67,7 +67,7 @@ async function startApp() {
 
 	app.use('/api', routes);
 	console.log('Starting Server...');
-	https.createServer({ key: AUTH.privateKey, cert: AUTH.certificate, ca: AUTH.ca }, app).listen(PORT, '0.0.0.0', () => console.log(`Server Started on port:  ${PORT}`));
+	https.createServer({ key: AUTH.privateKey, cert: AUTH.certificate, ca: AUTH.ca }, app).listen(PORT, '0.0.0.0', () => console.log(`Server Started on port: ${PORT}`));
 }
 
 startApp();

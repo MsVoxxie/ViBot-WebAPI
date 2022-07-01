@@ -1,5 +1,5 @@
 {
 	"name": "ViBotAPI",
 	"script": "app.js",
-	"watch": "app.js"
+	"watch": ["app.js", "/routes/*.js"]
 }
