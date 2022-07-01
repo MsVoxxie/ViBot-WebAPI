@@ -13,13 +13,12 @@ router.get('/b62', async (req, res) => {
 
 	//If there is no MonitoredVehicleJourney, return that the service is disrupted
 	//Later I will send disruption information...
-	if (!MonitoredVehicleJourney) return res.status(503).send('No Data to Display, Service may be disrupted');
 
 	const Data = {
-		LineName: MonitoredVehicleJourney.PublishedLineName[0],
-		Destination: MonitoredVehicleJourney.DestinationName[0],
-		ExpectedArrivalTime: `Arriving ${moment(MonitoredVehicleJourney.MonitoredCall.ExpectedArrivalTime).fromNow()}`,
-		NumberOfStopsAway: parseInt(MonitoredVehicleJourney.MonitoredCall.NumberOfStopsAway),
+		LineName: MonitoredVehicleJourney ? MonitoredVehicleJourney.PublishedLineName[0] : 'No Data',
+		Destination: MonitoredVehicleJourney ? MonitoredVehicleJourney.DestinationName[0] : 'No Data',
+		ExpectedArrivalTime: `${MonitoredVehicleJourney ? `Arriving ${moment(MonitoredVehicleJourney.MonitoredCall.ExpectedArrivalTime).fromNow()}` : "You're deadass out of luck"}`,
+		NumberOfStopsAway: MonitoredVehicleJourney ? MonitoredVehicleJourney.MonitoredCall.NumberOfStopsAway : 'No Data',
 	};
 	if (Data) {
 		res.send(Data);
