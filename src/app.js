@@ -41,7 +41,7 @@ async function startApp() {
 	});
 
 	const limiterTimeout = 15 * 60 * 1000; // 15 minutes
- 
+
 	const limiter = rateLimit({
 		windowMs: limiterTimeout,
 		max: 1000,
@@ -52,9 +52,21 @@ async function startApp() {
 	app.use(express.json());
 	app.use(express.urlencoded({ extended: false }));
 
-	app.use(cors({ origin: ['https://api.voxxie.me', 'https://bot.voxxie.me', 'https://share.voxxie.me', 'https://localhost', 'https://192.168.0.108'], credentials: true }));
+	app.use(cors({ origin: process.env.CORS.split(' '), credentials: true }));
 
-	app.use(session({ secret: process.env.COOKIE_SECRET, cookie: { maxAge: 60 * 1000 * 60 * 24 * 7 }, resave: false, saveUninitialized: false, store: Store.create({ mongoUrl: process.env.DB_CREDS }) }));
+	app.use(
+		session({
+			secret: process.env.COOKIE_SECRET,
+			cookie: {
+				httpOnly: true,
+				secure: true,
+				maxAge: 60 * 1000 * 60 * 24 * 7,
+			},
+			resave: false,
+			saveUninitialized: false,
+			store: Store.create({ mongoUrl: process.env.DB_CREDS }),
+		})
+	);
 
 	app.use(passport.initialize());
 	app.use(passport.session());
