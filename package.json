@@ -12,7 +12,6 @@
     "axios": "^0.27.2",
     "connect-mongo": "^4.4.1",
     "cors": "^2.8.5",
-    "create-react-app": "^1.2.1",
     "crypto-js": "^4.0.0",
     "diskspace": "^2.0.0",
     "dotenv": "^10.0.0",
