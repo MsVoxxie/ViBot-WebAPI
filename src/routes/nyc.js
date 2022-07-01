@@ -5,10 +5,10 @@ require('dotenv').config();
 
 router.get('/b62', async (req, res) => {
 	//Get Response from API
-	const response = await axios.get(`http://bustime.mta.info/api/siri/stop-monitoring.json?key=${process.env.BUS_KEY}&version=2&OperatorRef=MTA&MonitoringRef=304940&LineRef=MTA%20NYCT_B62&MaximumStopVts=2`);
+	const response = await axios.get(`http://bustime.mta.info/api/siri/stop-monitoring.json?key=${process.env.BUS_KEY}&version=2&OperatorRef=MTA&MonitoringRef=304940&LineRef=MTA%20NYCT_B62&MaximumStopVts=1`);
 
 	//Get the data from the response
-	const MonitoredVehicleJourney = response.data.Siri.ServiceDelivery.StopMonitoringDelivery?.[0]?.MonitoredStopVisit?.[0].MonitoredVehicleJourney;
+	const MonitoredVehicleJourney = response.data.Siri.ServiceDelivery.StopMonitoringDelivery?.[0]?.MonitoredStopVisit?.[0]?.MonitoredVehicleJourney;
 	// const SituationExchangeDelivery = response.data.Siri.ServiceDelivery.SituationExchangeDelivery;
 
 	//If there is no MonitoredVehicleJourney, return that the service is disrupted
