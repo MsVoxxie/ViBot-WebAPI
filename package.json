@@ -18,6 +18,7 @@
     "express": "^4.17.1",
     "express-rate-limit": "^5.3.0",
     "express-session": "^1.17.2",
+    "gamedig": "^4.0.4",
     "moment": "^2.29.3",
     "mongoose": "^5.12.13",
     "ms": "^2.1.3",

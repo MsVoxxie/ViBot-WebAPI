@@ -16,13 +16,13 @@ router.get('/statistics', async (req, res) => {
 		CpuUsage: Math.round(cpuAverage),
 		TotalMem: Math.floor(os.totalmem() / (1024 * 1024)),
 		FreeMem: Math.floor(os.freemem() / (1024 * 1024)),
-		UsedMem: Math.floor((os.totalmem() - os.freemem()) / os.totalmem() * 100),
-		DiskTotal: Math.floor((diskUsage.total) / (1024 * 1024 * 1024)),
-		DiskFree: Math.floor((diskUsage.free) / (1024 * 1024 * 1024)),
-		DiskUsage: Math.floor((diskUsage.used) / (diskUsage.total) * 100),
+		UsedMem: Math.floor(((os.totalmem() - os.freemem()) / os.totalmem()) * 100),
+		DiskTotal: Math.floor(diskUsage.total / (1024 * 1024 * 1024)),
+		DiskFree: Math.floor(diskUsage.free / (1024 * 1024 * 1024)),
+		DiskUsage: Math.floor((diskUsage.used / diskUsage.total) * 100),
 		Platform: os.platform(),
 	};
-	return res.send(stats);
+	res.send(stats);
 });
 
 function firstUpper(string) {
