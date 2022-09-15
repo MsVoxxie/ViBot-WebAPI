@@ -2,6 +2,8 @@ const { ConvertRGBtoHex, HexToRgb } = require('../functions/colorFunctions');
 const router = require('express').Router();
 const axios = require('axios');
 
+// Rand Colors
+
 router.get('/colorlovers', async (req, res) => {
 	const response = await axios.post(`http://www.colourlovers.com/api/palettes/random?format=json`);
 	const data = response.data[0];

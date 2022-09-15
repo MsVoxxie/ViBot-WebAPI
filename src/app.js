@@ -40,15 +40,15 @@ async function startApp() {
 		return process.exit(1);
 	});
 
-	const limiterTimeout = 15 * 60 * 1000; // 15 minutes
+	// const limiterTimeout = 15 * 60 * 1000; // 15 minutes
 
-	const limiter = rateLimit({
-		windowMs: limiterTimeout,
-		max: 1000,
-		message: `Woah there buckaroo, Looks like you're trying to do something naughty! Sit in the timeout corner for ${ms(limiterTimeout, { long: true })}!`,
-	});
+	// const limiter = rateLimit({
+	// 	windowMs: limiterTimeout,
+	// 	max: 1000,
+	// 	message: `Woah there buckaroo, Looks like you're trying to do something naughty! Sit in the timeout corner for ${ms(limiterTimeout, { long: true })}!`,
+	// });
 
-	app.use(limiter);
+	// app.use(limiter);
 	app.use(express.json());
 	app.use(express.urlencoded({ extended: false }));
 
@@ -79,7 +79,7 @@ async function startApp() {
 
 	app.use('/api', routes);
 	console.log('Starting Server...');
-	https.createServer({ key: AUTH.privateKey, cert: AUTH.certificate, ca: AUTH.ca }, app).listen(PORT, '0.0.0.0', () => console.log(`Server Started on port: ${PORT}`));
+	https.createServer({ key: AUTH.privateKey, cert: AUTH.certificate, ca: AUTH.ca }, app).listen(PORT, () => console.log(`Server Started on port: ${PORT}`));
 }
 
 startApp();
