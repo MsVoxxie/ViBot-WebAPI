@@ -86,7 +86,7 @@ async function MinecraftCheck(NAME = String, IP = String, PORT = Number, SERVER_
 				if (DATA.oldState !== DATA.curState) {
 					if (DATA.curState === 'Ready') {
 						//Wait
-						await delay(15 * 1000);
+						await delay(30 * 1000);
 
 						//QUERY the server
 						QUERY = await Gamedig.query({
