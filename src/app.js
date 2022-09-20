@@ -40,15 +40,15 @@ async function startApp() {
 		return process.exit(1);
 	});
 
-	// const limiterTimeout = 15 * 60 * 1000; // 15 minutes
+	const limiterTimeout = 1 * 60 * 1000; // 1 minutes
 
-	// const limiter = rateLimit({
-	// 	windowMs: limiterTimeout,
-	// 	max: 1000,
-	// 	message: `Woah there buckaroo, Looks like you're trying to do something naughty! Sit in the timeout corner for ${ms(limiterTimeout, { long: true })}!`,
-	// });
+	const limiter = rateLimit({
+		windowMs: limiterTimeout,
+		max: 1000,
+		message: `Woah there buckaroo, Looks like you're trying to do something naughty! Sit in the timeout corner for ${ms(limiterTimeout, { long: true })}!`,
+	});
 
-	// app.use(limiter);
+	app.use(limiter);
 	app.use(express.json());
 	app.use(express.urlencoded({ extended: false }));
 
