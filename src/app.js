@@ -59,6 +59,7 @@ async function startApp() {
 			secret: process.env.COOKIE_SECRET,
 			cookie: {
 				httpOnly: true,
+				sameSite: true,
 				secure: true,
 				maxAge: 60 * 1000 * 60 * 24 * 7,
 			},

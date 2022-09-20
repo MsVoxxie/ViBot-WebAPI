@@ -120,7 +120,7 @@ async function MinecraftCheck(NAME = String, IP = String, PORT = Number, SERVER_
 				break;
 		}
 	} catch (error) {
-		return console.error(error);
+		return console.error('ERROR');
 	}
 }
 
