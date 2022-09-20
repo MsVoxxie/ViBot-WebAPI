@@ -58,10 +58,7 @@ async function startApp() {
 		session({
 			secret: process.env.COOKIE_SECRET,
 			cooki: {
-				domain: 'https://api.voxxie.me/',
-				path: '/',
 				httpOnly: true,
-				sameSite: true,
 				secure: true,
 				maxAge: 60 * 1000 * 60 * 24 * 7,
 			},
