@@ -57,7 +57,9 @@ async function startApp() {
 	app.use(
 		session({
 			secret: process.env.COOKIE_SECRET,
-			cookie: {
+			cooki: {
+				domain: 'https://api.voxxie.me/',
+				path: '/',
 				httpOnly: true,
 				sameSite: true,
 				secure: true,
