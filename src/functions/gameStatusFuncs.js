@@ -26,8 +26,9 @@ async function MinecraftCheck(NAME = String, IP = String, PORT = Number, SERVER_
 					maxAttempts: 10,
 				});
 
-				PLAYER_COUNT = `\`\`\`Player Count: ${QUERY.players.length}/${QUERY.maxplayers}\`\`\``;
-				SERVER_MOTD = `${QUERY.name ? `\n\`\`\`css\nMOTD: ${QUERY.name}\`\`\`` : ''}`;
+				PLAYER_COUNT = `\`\`\`css\nPlayer Count: ${QUERY.players.length}/${QUERY.maxplayers}\`\`\``;
+				SERVER_MOTD = QUERY.name.split('Version').map((s) => s.trim());
+				SERVER_MOTD = `${QUERY.name ? `\`\`\`css\nMOTD: ${SERVER_MOTD[0]}\nVersion: ${SERVER_MOTD[1]}\`\`\`` : ''}`;
 
 				//Push each player to the list
 				playerList.push(`+ ${DATA.user}`);
@@ -59,8 +60,10 @@ async function MinecraftCheck(NAME = String, IP = String, PORT = Number, SERVER_
 					maxAttempts: 10,
 				});
 
-				PLAYER_COUNT = `\`\`\`Player Count: ${QUERY.players.length}/${QUERY.maxplayers}\`\`\``;
-				SERVER_MOTD = `${QUERY.name ? `\n\`\`\`css\nMOTD: ${QUERY.name}\`\`\`` : ''}`;
+				PLAYER_COUNT = `\`\`\`css\nPlayer Count: ${QUERY.players.length}/${QUERY.maxplayers}\`\`\``;
+				SERVER_MOTD = QUERY.name.split('Version').map((s) => s.trim());
+				SERVER_MOTD = `${QUERY.name ? `\`\`\`css\nMOTD: ${SERVER_MOTD[0]}\nVersion: ${SERVER_MOTD[1]}\`\`\`` : ''}`;
+
 				//Push each player to the list
 				playerList.push(`- ${DATA.user}`);
 				QUERY.players.map((p) => {
@@ -86,7 +89,7 @@ async function MinecraftCheck(NAME = String, IP = String, PORT = Number, SERVER_
 				if (DATA.oldState !== DATA.curState) {
 					if (DATA.curState === 'Ready') {
 						//Wait
-						await delay(30 * 1000);
+						await delay(90 * 1000);
 
 						//QUERY the server
 						QUERY = await Gamedig.query({
@@ -97,8 +100,9 @@ async function MinecraftCheck(NAME = String, IP = String, PORT = Number, SERVER_
 							maxAttempts: 10,
 						});
 
-						PLAYER_COUNT = `\`\`\`Player Count: ${QUERY.players.length}/${QUERY.maxplayers}\`\`\``;
-						SERVER_MOTD = `${QUERY.name ? `\n\`\`\`css\nMOTD: ${QUERY.name}\`\`\`` : ''}`;
+						PLAYER_COUNT = `\`\`\`css\nPlayer Count: ${QUERY.players.length}/${QUERY.maxplayers}\`\`\``;
+						SERVER_MOTD = QUERY.name.split('Version').map((s) => s.trim());
+						SERVER_MOTD = `${QUERY.name ? `\`\`\`css\nMOTD: ${SERVER_MOTD[0]}\nVersion: ${SERVER_MOTD[1]}\`\`\`` : ''}`;
 
 						await sendWebhook({
 							title: `${SERVER_NAME} - Server ${DATA.curState}`,
@@ -116,7 +120,7 @@ async function MinecraftCheck(NAME = String, IP = String, PORT = Number, SERVER_
 				break;
 
 			default:
-				console.log(`Unknown`);
+				console.log(`Unknown: ${DATA.curState}`);
 				break;
 		}
 	} catch (error) {
