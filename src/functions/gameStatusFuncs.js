@@ -100,13 +100,14 @@ async function MinecraftCheck(NAME = String, IP = String, PORT = Number, SERVER_
 							maxAttempts: 10,
 						});
 
+						CONNECTION_INFO = `\`\`\`css\nIP: ${IP} PORT: ${PORT}\`\`\``;
 						PLAYER_COUNT = `\`\`\`css\nPlayer Count: ${QUERY.players.length}/${QUERY.maxplayers}\`\`\``;
 						SERVER_MOTD = QUERY.name.split('Version').map((s) => s.trim());
 						SERVER_MOTD = `${QUERY.name ? `\`\`\`css\nMOTD: ${SERVER_MOTD[0]}\nVersion: ${SERVER_MOTD[1]}\`\`\`` : ''}`;
 
 						await sendWebhook({
 							title: `${SERVER_NAME} - Server ${DATA.curState}`,
-							description: `${SERVER_MOTD}${PLAYER_COUNT}`,
+							description: `${CONNECTION_INFO}${SERVER_MOTD}${PLAYER_COUNT}`,
 							URL: WEBURL,
 						});
 					} else {
