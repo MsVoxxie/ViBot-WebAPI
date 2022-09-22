@@ -120,6 +120,22 @@ async function MinecraftCheck(NAME = String, IP = String, PORT = Number, SERVER_
 				}
 				break;
 
+			case 'sendMessage':
+				await sendWebhook({
+					title: `${SERVER_NAME} - Server Message`,
+					description: `${DATA.content}`,
+					URL: WEBURL,
+				});
+				break;
+
+			case 'sendAlert':
+				await sendWebhook({
+					title: `${SERVER_NAME} - Server Alert`,
+					description: `${DATA.content}`,
+					URL: WEBURL,
+				});
+				break;
+
 			default:
 				console.log(`Unknown: ${DATA.curState}`);
 				break;
