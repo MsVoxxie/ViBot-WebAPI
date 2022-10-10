@@ -1,6 +1,20 @@
 const Gamedig = require('gamedig');
 const { sendWebhook } = require('./webHooks');
 
+// Data
+const color = {
+	join: '#378c44',
+	leave: '#37578c',
+	state: '#ffffff',
+	ready: '#27e864',
+	start: '#91c734',
+	stop: '#ebe234',
+	msg: '#34bdeb',
+	alert: '#eb8f34',
+	err: '#eb3a34',
+};
+
+// Functions
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function MinecraftCheck(NAME = String, IP = String, PORT = Number, SERVER_DATA = Object, WEBURL = String) {
@@ -44,6 +58,7 @@ async function MinecraftCheck(NAME = String, IP = String, PORT = Number, SERVER_
 				//Send the webhook
 				await sendWebhook({
 					title: `${SERVER_NAME} - Player Connected`,
+					color: color.join,
 					description: `${SERVER_MOTD}${PLAYER_COUNT}${playerFinal}`,
 					URL: WEBURL,
 				});
@@ -78,6 +93,7 @@ async function MinecraftCheck(NAME = String, IP = String, PORT = Number, SERVER_
 				//Send the webhook
 				await sendWebhook({
 					title: `${SERVER_NAME} - Player Disconnected`,
+					color: color.leave,
 					description: `${SERVER_MOTD}${PLAYER_COUNT}${playerFinal}`,
 					URL: WEBURL,
 				});
@@ -89,7 +105,7 @@ async function MinecraftCheck(NAME = String, IP = String, PORT = Number, SERVER_
 				if (DATA.oldState !== DATA.curState) {
 					if (DATA.curState === 'Ready') {
 						//Wait
-						await delay(90 * 1000);
+						await delay(60 * 1000);
 
 						//QUERY the server
 						QUERY = await Gamedig.query({
@@ -107,6 +123,7 @@ async function MinecraftCheck(NAME = String, IP = String, PORT = Number, SERVER_
 
 						await sendWebhook({
 							title: `${SERVER_NAME} - Server ${DATA.curState}`,
+							color: color.ready,
 							description: `${CONNECTION_INFO}${SERVER_MOTD}${PLAYER_COUNT}`,
 							URL: WEBURL,
 						});
@@ -114,6 +131,7 @@ async function MinecraftCheck(NAME = String, IP = String, PORT = Number, SERVER_
 						// Send the webhook
 						await sendWebhook({
 							title: `${SERVER_NAME} - Server ${DATA.curState}`,
+							color: color.state,
 							URL: WEBURL,
 						});
 					}
@@ -123,6 +141,7 @@ async function MinecraftCheck(NAME = String, IP = String, PORT = Number, SERVER_
 			case 'sendMessage':
 				await sendWebhook({
 					title: `${SERVER_NAME} - Server Message`,
+					color: color.msg,
 					description: `${DATA.content}`,
 					URL: WEBURL,
 				});
@@ -131,6 +150,16 @@ async function MinecraftCheck(NAME = String, IP = String, PORT = Number, SERVER_
 			case 'sendAlert':
 				await sendWebhook({
 					title: `${SERVER_NAME} - Server Alert`,
+					color: color.alert,
+					description: `${DATA.content}`,
+					URL: WEBURL,
+				});
+				break;
+
+			case 'sendError':
+				await sendWebhook({
+					title: `${SERVER_NAME} - Server Error`,
+					color: color.err,
 					description: `${DATA.content}`,
 					URL: WEBURL,
 				});
@@ -141,7 +170,7 @@ async function MinecraftCheck(NAME = String, IP = String, PORT = Number, SERVER_
 				break;
 		}
 	} catch (error) {
-		return console.error('ERROR');
+		return console.error(error);
 	}
 }
 

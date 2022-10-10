@@ -21,18 +21,18 @@ const servers = {
 // Minecraft / ATM7
 router.post('/atm7', async (req, res) => {
 	await MinecraftCheck('ATM7', process.env.SERVER_IP, 25565, req.body, process.env.ATM7_WEBHOOK);
-	res.send(200, { message: "Success!" })
+	res.status(200).send({ message: 'Success!' });
 });
 
 // Minecraft / ATM8
 router.post('/atm8', async (req, res) => {
 	await MinecraftCheck('ATM8', process.env.SERVER_IP, 25569, req.body, process.env.ATM8_WEBHOOK);
-	res.send(200, { message: "Success!" })
+	res.status(200).send({ message: 'Success!' });
 });
 
 // Garry's Mod / Wirebox
 router.post('/wirebox', async (req, res) => {
-	res.send(200, { message: "Success!" })
+	res.status(200).send({ message: 'Success!' });
 });
 
 module.exports = router;

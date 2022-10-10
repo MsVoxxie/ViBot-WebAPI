@@ -25,6 +25,10 @@ router.get('/statistics', async (req, res) => {
 	res.send(stats);
 });
 
+router.get('/network', async (req, res) => {
+	res.send(404);
+});
+
 function firstUpper(string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -69,3 +73,5 @@ function getDuration(startDate, endDate) {
 }
 
 module.exports = router;
+
+// "https://api.fast.com/netflix/speedtest/v2?https=true&token=YXNkZmFzZGxmbnNkYWZoYXNkZmhrYWxm&urlCount=5";

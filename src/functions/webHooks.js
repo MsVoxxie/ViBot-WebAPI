@@ -1,12 +1,23 @@
 const moment = require('moment');
 const axios = require('axios');
 
+// Hex to Deci
+const hexToDecimal = (hex) => {
+	let trim = hex.slice(1)
+	return parseInt(trim, 16);
+};
+
+// Webhooks
 async function sendWebhook(data) {
+	// Format Hex for webhook
+	const setCol = hexToDecimal(data.color);
+	console.log(setCol);
+
 	//An array of Discord Embeds.
 	let embeds = [
 		{
 			title: data.title,
-			color: 16557849,
+			color: setCol,
 			footer: {
 				text: `📅 ${moment(Date.now()).format('MMMM Do YYYY, h:mm:ss A')}`,
 			},
