@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const gamestatus = require('./gamestatus');
+// const gamestatus = require('./gamestatus');
 const discord = require('./discord');
 const canvas = require('./canvas');
 const health = require('./health');
@@ -8,7 +8,7 @@ const auth = require('./auth');
 const nyc = require('./nyc');
 
 //Use Routes
-router.use('/gamestatus', gamestatus);
+// router.use('/gamestatus', gamestatus);
 router.use('/discord', discord);
 router.use('/canvas', canvas);
 router.use('/health', health);

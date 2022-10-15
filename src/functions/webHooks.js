@@ -11,7 +11,6 @@ const hexToDecimal = (hex) => {
 async function sendWebhook(data) {
 	// Format Hex for webhook
 	const setCol = hexToDecimal(data.color);
-	console.log(setCol);
 
 	//An array of Discord Embeds.
 	let embeds = [
